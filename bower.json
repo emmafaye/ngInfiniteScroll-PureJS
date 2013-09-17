@@ -1,0 +1,31 @@
+{
+  "name": "ngInfiniteScroll-PureJS",
+  "version": "1.0.0",
+  "homepage": "https://github.com/matthewhardnack/ngInfiniteScroll-PureJS",
+  "authors": [
+    "Brandon Tilley <brandon@brandontilley.com>",
+    "Matthew Hardnack <matthewhardnack@gmail.com>"
+  ],
+  "main": "dist/ng-infinite-scroll.min.js",
+  "description": "ngInfiniteScroll is a directive in (refactored in PureJS) for AngularJS to evaluate an expression when the bottom of the directive's element approaches the bottom of the browser window, which can be used to implement infinite scrolling.",
+  "keywords": [
+    "infinite",
+    "scroll",
+    "scrolling",
+    "angular",
+    "ngInfiniteScroll",
+    "PureJS",
+    "pagination"
+  ],
+  "dependencies": {
+    "angular": ">=1.1.5"
+  },
+  "license": "MIT",
+  "ignore": [
+    "**/.*",
+    "node_modules",
+    "bower_components",
+    "test",
+    "tests"
+  ]
+}

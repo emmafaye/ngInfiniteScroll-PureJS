@@ -23,10 +23,8 @@ The [download page](http://binarymuse.github.com/ngInfiniteScroll/#download) all
 Getting Started
 ---------------
 
- * Download ngInfiniteScroll from [the download page on the ngInfiniteScroll web site](http://binarymuse.github.com/ngInfiniteScroll/#download) or install it with [Bower](http://bower.io/) via `bower install ngInfiniteScroll`
- * Include the script tag on your page after the AngularJS and jQuery script tags (ngInfiniteScroll requires jQuery to run)
+ * Download ngInfiniteScroll annd install manually or install it with [Bower](http://bower.io/) via `bower install angular-infinite-scroll-purejs`
 
-        <script type='text/javascript' src='path/to/jquery.min.js'></script>
         <script type='text/javascript' src='path/to/angular.min.js'></script>
         <script type='text/javascript' src='path/to/ng-infinite-scroll.min.js'></script>
 

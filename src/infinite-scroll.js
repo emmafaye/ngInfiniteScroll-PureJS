@@ -4,7 +4,7 @@ module.directive('infiniteScroll', ['$rootScope', '$window', '$timeout', functio
     return {
         link: function(scope, element, attrs) {
             $window = angular.element($window);
-            var scrollDistance   = 0;
+            var scrollDistance   = attrs.infiniteScrollDistance || 0;
             var scrollEnabled    = true;
             var checkWhenEnabled = false;
 
@@ -15,19 +15,21 @@ module.directive('infiniteScroll', ['$rootScope', '$window', '$timeout', functio
             // called in order to throttle the function call.
             var handler = function() {
                 var windowBottom  = $window[0].innerHeight + $window[0].scrollY;
-                var elementBottom = element[0].offsetTop + element[0].scrollHeight;
+                var elementBottom = element[0].offsetTop + element[0].clientHeight;
                 var remaining     = elementBottom - windowBottom;
                 var shouldScroll  = remaining <= $window[0].innerHeight * scrollDistance;
 
-                if(shouldScroll && scrollEnabled) {
-                    if($rootScope.$$phase) {
+                if (!shouldScroll)
+                    return;
+
+                if (scrollEnabled) {
+                    if ($rootScope.$$phase)
                         return scope.$eval(attrs.infiniteScroll);
-                    } else {
-                        return scope.$apply(attrs.infiniteScroll);
-                    }
-                } else if(shouldScroll) {
-                    return checkWhenEnabled = true;
+
+                    return scope.$apply(attrs.infiniteScroll);
                 }
+
+                checkWhenEnabled = true;
             };
 
             // infinite-scroll-distance specifies how close to the bottom of the page
@@ -35,11 +37,10 @@ module.directive('infiniteScroll', ['$rootScope', '$window', '$timeout', functio
             // provided is multiplied by the window height; for example, to load
             // more when the bottom of the page is less than 3 window heights away,
             // specify a value of 3. Defaults to 0.
-            if(!attrs.infiniteScrollDistance) {
+            if (attrs.infiniteScrollDistance)
                 scope.$watch(attrs.infiniteScrollDistance, function(value) {
                     return scrollDistance = parseInt(value, 10);
                 });
-            }
 
             // infinite-scroll-disabled specifies a boolean that will keep the
             // infnite scroll function from being called; this is useful for
@@ -47,13 +48,12 @@ module.directive('infiniteScroll', ['$rootScope', '$window', '$timeout', functio
             // scroll is triggered but this value evaluates to true, then
             // once it switches back to false the infinite scroll function
             // will be triggered again.
-            if(!attrs.infiniteScrollDisabled) {
+            if (attrs.infiniteScrollDisabled) {
                 scope.$watch(attrs.infiniteScrollDisabled, function(value) {
                     scrollEnabled = !value;
 
-                    if(scrollEnabled && checkWhenEnabled) {
+                    if (scrollEnabled && checkWhenEnabled) {
                         checkWhenEnabled = false;
-
                         return handler();
                     }
                 });
@@ -64,15 +64,10 @@ module.directive('infiniteScroll', ['$rootScope', '$window', '$timeout', functio
                 return $window.unbind('scroll', handler);
             });
 
-            return $timeout((function() {
-                if(attrs.infiniteScrollImmediateCheck) {
-                    if(scope.$eval(attrs.infiniteScrollImmediateCheck)) {
-                        return handler();
-                    }
-                } else {
-                    return handler();
-                }
-            }), 0);
+            return $timeout(function() {
+                if (!attrs.infiniteScrollImmediateCheck || scope.$eval(attrs.infiniteScrollImmediateCheck))
+                    handler();
+            });
         }
     };
 }]);

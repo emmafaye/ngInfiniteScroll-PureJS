@@ -1,7 +1,9 @@
 should = chai.should()
 
+mocha.setup globals: ['innerHeight', 'scrollY']
+
 describe 'Infinite Scroll', ->
-  [$rootScope, $compile, docWindow, $document, $timeout, fakeWindow, origJq] = [undefined]
+  [$rootScope, $compile, body, $timeout, fakeWindow, origJq] = [undefined]
 
   beforeEach ->
     angular.mock.module('infinite-scroll')
@@ -11,9 +13,10 @@ describe 'Infinite Scroll', ->
       $rootScope = _$rootScope_
       $compile = _$compile_
       $window = _$window_
-      $document = _$document_
+      body = angular.element(_$document_.prop('body'))
       $timeout = _$timeout_
       fakeWindow = angular.element($window)
+      body.append('<style>* { margin: 0; padding: 0; }</style>')
 
       origJq = angular.element
       angular.element = (first, args...) ->
@@ -31,9 +34,9 @@ describe 'Infinite Scroll', ->
       infinite-scroll-immediate-check='false'></div>
     """
     el = angular.element(scroller)
-    $document.append(el)
+    body.append(el)
 
-    sinon.stub(fakeWindow, 'height').returns(1000)
+    fakeWindow.prop('innerHeight', 1000)
     scope = $rootScope.$new(true)
     scope.scroll = sinon.spy()
     $compile(el)(scope)
@@ -49,9 +52,9 @@ describe 'Infinite Scroll', ->
     <div infinite-scroll='scroll()' style='height: 1000px'></div>
     """
     el = angular.element(scroller)
-    $document.append(el)
+    body.append(el)
 
-    sinon.stub(fakeWindow, 'height').returns(1000)
+    fakeWindow.prop('innerHeight', 1000)
     scope = $rootScope.$new(true)
     scope.scroll = sinon.spy()
     $compile(el)(scope)
@@ -67,9 +70,9 @@ describe 'Infinite Scroll', ->
       infinite-scroll-immediate-check='false' style='height: 500px;'></div>
     """
     el = angular.element(scroller)
-    $document.append(el)
+    body.append(el)
 
-    sinon.stub(fakeWindow, 'height').returns(1000)
+    fakeWindow.prop('innerHeight', 1000)
     scope = $rootScope.$new(true)
     scope.scroll = sinon.spy()
     $compile(el)(scope)
@@ -87,9 +90,9 @@ describe 'Infinite Scroll', ->
       infinite-scroll-disabled='busy' style='height: 500px;'></div>
     """
     el = angular.element(scroller)
-    $document.append(el)
+    body.append(el)
 
-    sinon.stub(fakeWindow, 'height').returns(1000)
+    fakeWindow.prop('innerHeight', 1000)
     scope = $rootScope.$new(true)
     scope.scroll = sinon.spy()
     scope.busy = true
@@ -108,9 +111,9 @@ describe 'Infinite Scroll', ->
       infinite-scroll-disabled='busy' style='height: 500px;'></div>
     """
     el = angular.element(scroller)
-    $document.append(el)
+    body.append(el)
 
-    sinon.stub(fakeWindow, 'height').returns(1000)
+    fakeWindow.prop('innerHeight', 1000)
     scope = $rootScope.$new(true)
     scope.scroll = sinon.spy()
     scope.busy = true
@@ -133,10 +136,10 @@ describe 'Infinite Scroll', ->
       infinite-scroll-distance='1' style='height: 10000px'></div>
     """
     el = angular.element(scroller)
-    $document.append(el)
+    body.append(el)
 
-    sinon.stub(fakeWindow, 'height').returns(1000)
-    sinon.stub(fakeWindow, 'scrollTop').returns(7999)
+    fakeWindow.prop('innerHeight', 1000)
+    fakeWindow.prop('scrollY', 7999)
 
     scope = $rootScope.$new(true)
     scope.scroll = sinon.spy()
@@ -145,22 +148,23 @@ describe 'Infinite Scroll', ->
     fakeWindow.scroll()
     scope.scroll.should.not.have.been.called
 
-    fakeWindow.scrollTop.returns(8000)
+    fakeWindow.prop('scrollY', 8000)
     fakeWindow.scroll()
     scope.scroll.should.have.been.calledOnce
 
     el.remove()
     scope.$destroy()
 
+
   it 'respects the infinite-scroll-distance attribute', ->
     scroller = """
     <div infinite-scroll='scroll()' infinite-scroll-distance='5' style='height: 10000px;'></div>
     """
     el = angular.element(scroller)
-    $document.append(el)
+    body.append(el)
 
-    sinon.stub(fakeWindow, 'height').returns(1000)
-    sinon.stub(fakeWindow, 'scrollTop').returns(3999)
+    fakeWindow.prop('innerHeight', 1000)
+    fakeWindow.prop('scrollY', 3999)
 
     scope = $rootScope.$new(true)
     scope.scroll = sinon.spy()
@@ -169,7 +173,7 @@ describe 'Infinite Scroll', ->
     fakeWindow.scroll()
     scope.scroll.should.not.have.been.called
 
-    fakeWindow.scrollTop.returns(4000)
+    fakeWindow.prop('scrollY', 4000)
     fakeWindow.scroll()
     scope.scroll.should.have.been.calledOnce
 

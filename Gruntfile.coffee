@@ -10,45 +10,22 @@ module.exports = (grunt) ->
     pkg: grunt.file.readJSON 'package.json'
     meta:
       banner: '/* <%= pkg.name %> - v<%= pkg.version %> - <%= grunt.template.today("yyyy-mm-dd") %> */\n'
-    coffeelint:
-      src: 'src/**/*.coffee'
-      options:
-        max_line_length:
-          level: 'ignore'
-        line_endings:
-          value: 'unix'
-          level: 'error'
-        no_stand_alone_at:
-          level: 'error'
     clean:
       options:
         force: true
-      build: ["compile/**", "build/**"]
-    coffee:
-      compile:
-        files: [
-          {
-            expand: true
-            cwd: 'src/'
-            src: '**/*.coffee'
-            dest: 'compile/'
-            ext: '.js'
-          }
-        ],
-        options:
-          bare: true
+      dist: ["compile/**/*", "dist/**/*"]
     concat:
       options:
         banner: '<%= meta.banner %>'
       dist:
-        src: 'compile/**/*.js'
-        dest: 'build/ng-infinite-scroll.js'
+        src: 'src/**/*.js'
+        dest: 'dist/ng-infinite-scroll.js'
     uglify:
       options:
         banner: '<%= meta.banner %>'
       dist:
-        src: ['build/ng-infinite-scroll.js']
-        dest: 'build/ng-infinite-scroll.min.js'
+        src: ['dist/ng-infinite-scroll.js']
+        dest: 'dist/ng-infinite-scroll.min.js'
     karma:
       unit:
         configFile: 'test/karma.conf.js'
@@ -58,5 +35,5 @@ module.exports = (grunt) ->
         runnerPort: 9101
         keepalive: true
 
-  grunt.registerTask 'default', ['coffeelint', 'clean', 'coffee', 'concat', 'uglify']
+  grunt.registerTask 'default', ['clean', 'concat', 'uglify']
   grunt.registerTask 'test', ['karma']

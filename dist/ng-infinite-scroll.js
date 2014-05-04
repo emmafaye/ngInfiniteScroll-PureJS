@@ -1,3 +1,4 @@
+/* ng-infinite-scroll - v2.2.0 - 2014-05-03 */
 /* ng-infinite-scroll - v2.1.0 - 2014-04-24 */
 var module = angular.module('infinite-scroll', []);
 
@@ -15,7 +16,7 @@ module.directive('infiniteScroll', ['$rootScope', '$window', '$timeout', functio
             // with a boolean that is set to true when the function is
             // called in order to throttle the function call.
             var handler = function() {
-                var windowBottom  = $window[0].innerHeight + $window[0].scrollY;
+                var windowBottom  = $window[0].innerHeight + $window[0].pageYOffset;
                 var elementBottom = element[0].offsetTop + element[0].clientHeight;
                 var remaining     = elementBottom - windowBottom;
                 var shouldScroll  = remaining <= $window[0].innerHeight * scrollDistance;

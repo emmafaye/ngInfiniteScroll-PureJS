@@ -1,6 +1,6 @@
 should = chai.should()
 
-mocha.setup globals: ['innerHeight', 'scrollY']
+mocha.setup globals: ['innerHeight', 'pageYOffset']
 
 describe 'Infinite Scroll', ->
   [$rootScope, $compile, body, $timeout, fakeWindow, origJq] = [undefined]
@@ -139,7 +139,7 @@ describe 'Infinite Scroll', ->
     body.append(el)
 
     fakeWindow.prop('innerHeight', 1000)
-    fakeWindow.prop('scrollY', 7999)
+    fakeWindow.prop('pageYOffset', 7999)
 
     scope = $rootScope.$new(true)
     scope.scroll = sinon.spy()
@@ -148,7 +148,7 @@ describe 'Infinite Scroll', ->
     fakeWindow.scroll()
     scope.scroll.should.not.have.been.called
 
-    fakeWindow.prop('scrollY', 8000)
+    fakeWindow.prop('pageYOffset', 8000)
     fakeWindow.scroll()
     scope.scroll.should.have.been.calledOnce
 
@@ -164,7 +164,7 @@ describe 'Infinite Scroll', ->
     body.append(el)
 
     fakeWindow.prop('innerHeight', 1000)
-    fakeWindow.prop('scrollY', 3999)
+    fakeWindow.prop('pageYOffset', 3999)
 
     scope = $rootScope.$new(true)
     scope.scroll = sinon.spy()
@@ -173,7 +173,7 @@ describe 'Infinite Scroll', ->
     fakeWindow.scroll()
     scope.scroll.should.not.have.been.called
 
-    fakeWindow.prop('scrollY', 4000)
+    fakeWindow.prop('pageYOffset', 4000)
     fakeWindow.scroll()
     scope.scroll.should.have.been.calledOnce
 

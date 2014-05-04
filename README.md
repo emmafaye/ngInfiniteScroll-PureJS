@@ -51,7 +51,9 @@ ngInfiniteScroll is licensed under the MIT license. See the LICENSE file for mor
 Testing
 -------
 
-ngInfiniteScroll uses Testacular for its unit tests. Note that you will need [PhantomJS](http://phantomjs.org/) on your path, and the `grunt-cli` npm package installed globally if you wish to use grunt (`npm install -g grunt-cli`). Then, install the dependencies with `npm install`.
+ngInfiniteScroll uses Karma for its unit tests. Note that you will need [PhantomJS](http://phantomjs.org/) on your path, and the `grunt-cli` npm package installed globally if you wish to use grunt (`npm install -g grunt-cli`). Then, install the dependencies with `npm install`.
 
  * `grunt test` - continually watch for changes and run tests in PhantomJS and Chrome
  * `npm test` - run tests once in PhantomJS only
+
+If you have problems connecting to the PhantomJS instance when running tests, please ensure you're using the latest version of Node.js.

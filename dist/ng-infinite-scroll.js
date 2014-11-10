@@ -19,7 +19,7 @@ module.directive('infiniteScroll', ['$rootScope', '$window', '$timeout', functio
                     if($rootScope.$$phase) {
                         return scope.$eval(attrs.infiniteScroll);
                     } else {
-                        return scope.$apply(attrs.infinteiScroll);
+                        return scope.$apply(attrs.infiniteScroll);
                     }
                 } else if(shouldScroll) {
                     return checkWhenEnabled = true;

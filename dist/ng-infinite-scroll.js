@@ -10,7 +10,7 @@ module.directive('infiniteScroll', ['$rootScope', '$window', '$timeout', functio
             var checkWhenEnabled = false;
 
             var handler = function() {
-                var windowBottom  = $window[0].innerHeight + $window[0].scrollY;
+                var windowBottom  = $window[0].innerHeight + $window[0].pageYOffset;
                 var elementBottom = element[0].offsetTop + element[0].scrollHeight;
                 var remaining     = elementBottom - windowBottom;
                 var shouldScroll  = remaining <= $window[0].innerHeight * scrollDistance;
@@ -19,14 +19,14 @@ module.directive('infiniteScroll', ['$rootScope', '$window', '$timeout', functio
                     if($rootScope.$$phase) {
                         return scope.$eval(attrs.infiniteScroll);
                     } else {
-                        return scope.$apply(attrs.infinteiScroll);
+                        return scope.$apply(attrs.infiniteScroll);
                     }
                 } else if(shouldScroll) {
                     return checkWhenEnabled = true;
                 }
             };
 
-            if(!attrs.infiniteScrollDistance) {
+            if(!!attrs.infiniteScrollDistance) {
                 scope.$watch(attrs.infiniteScrollDistance, function(value) {
                     return scrollDistance = parseInt(value, 10);
                 });

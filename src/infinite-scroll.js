@@ -14,7 +14,7 @@ module.directive('infiniteScroll', ['$rootScope', '$window', '$timeout', functio
             // with a boolean that is set to true when the function is
             // called in order to throttle the function call.
             var handler = function() {
-                var windowBottom  = $window[0].innerHeight + $window[0].scrollY;
+                var windowBottom  = $window[0].innerHeight + $window[0].pageYOffset;
                 var elementBottom = element[0].offsetTop + element[0].scrollHeight;
                 var remaining     = elementBottom - windowBottom;
                 var shouldScroll  = remaining <= $window[0].innerHeight * scrollDistance;
@@ -35,7 +35,7 @@ module.directive('infiniteScroll', ['$rootScope', '$window', '$timeout', functio
             // provided is multiplied by the window height; for example, to load
             // more when the bottom of the page is less than 3 window heights away,
             // specify a value of 3. Defaults to 0.
-            if(!attrs.infiniteScrollDistance) {
+            if(!!attrs.infiniteScrollDistance) {
                 scope.$watch(attrs.infiniteScrollDistance, function(value) {
                     return scrollDistance = parseInt(value, 10);
                 });
